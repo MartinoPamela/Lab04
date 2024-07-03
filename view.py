@@ -1,5 +1,6 @@
 import flet as ft
 
+
 class View(object):
     def __init__(self, page: ft.Page):
         # Page
@@ -28,14 +29,44 @@ class View(object):
 
         # Add your stuff here
 
-        self.page.add([])
+        # self.page.add([])
+
+        self._linguaggio = ft.Dropdown(label="Select language", width=1000,
+                                       options=[
+                                           ft.dropdown.Option("italian"),
+                                           ft.dropdown.Option("english"),
+                                           ft.dropdown.Option("spanish")],
+                                       on_change=self.__controller.handleLanguageSelection)
+
+        #self.page.controls.append(ft.Row([self._linguaggio]))
+        row1 = ft.Row([self._linguaggio], alignment=ft.MainAxisAlignment.START)
+        self.page.controls.append(row1)
+
+        self._ricerca = ft.Dropdown(label="Search modality", width=300,
+                                    options=[
+                                        ft.dropdown.Option("Default"),
+                                        ft.dropdown.Option("Linear"),
+                                        ft.dropdown.Option("Dichotomic")],
+                                    on_change=self.__controller.handleSelectSearchMode)
+
+        self._txtIn = ft.TextField(label="Add your sentence here", width=700)
+
+        self._btn = ft.ElevatedButton("Spell check", on_click=self.__controller.handleSpellCheck)
+
+        row2 = ft.Row([self._ricerca, self._txtIn, self._btn], alignment=ft.MainAxisAlignment.CENTER)
+        self.page.controls.append(row2)
+
+        self._lvOut = ft.ListView(expand=1, spacing=10)
+        self.page.controls.append(self._lvOut)
 
         self.page.update()
 
     def update(self):
         self.page.update()
+
     def setController(self, controller):
         self.__controller = controller
+
     def theme_changed(self, e):
         """Function that changes the color theme of the app, when the corresponding
         switch is triggered"""
